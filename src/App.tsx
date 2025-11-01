@@ -1,33 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
+import type { Question } from './types/types'
+import { fetchQuestions } from './services/opentdbAPI'
+import { groupQuestionsByCategory, groupQuestionsByDifficulty } from './utilities/questions-processing'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [questions, setQuestions] = useState<Question[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchQuestions()
+      .then(questions => {
+        console.log('Fetched:', questions.length);
+        setQuestions(questions);
+      })
+      .catch(error => {
+        console.error('Error:', error.message);
+        setError(error.message);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {questions && (
+        questions.map((question, index) => (
+          <div key={index} style={{ display: 'flex', justifyContent: 'space-between'}}>
+            <p>{question.question}</p>
+            <p>{question.category}</p>
+            <p>{question.difficulty}</p>
+            <p>{question.correct_answer}</p>
+          </div>
+        ))
+      )}
+      {(
+        console.log( groupQuestionsByDifficulty(questions || [])),
+        console.log( groupQuestionsByCategory(questions || []))
+      )}
     </>
   )
 }
