@@ -3,10 +3,11 @@ import type { Question } from '../types/types';
 import FetchDataForm from '../components/fetch-data-form';
 import { fetchQuestions } from '../services/opentdbAPI';
 import OneQuestion from '../components/one-question';
-import { getAllCategories } from '../utilities/questions-processing';
+import { filterQuestionsByCategory, getAllCategories } from '../utilities/questions-processing';
 
 const Questions = () => {
     const [questions, setQuestions] = useState<Question[] | null>(null);
+    const [displayedQuestions, setDisplayedQuestions] = useState<Question[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -18,6 +19,7 @@ const Questions = () => {
         fetchQuestions(amount)
             .then(questions => {
                 setQuestions(questions);
+                setDisplayedQuestions(questions);
             })
             .catch(error => {
                 console.error('Error:', error.message);
@@ -25,28 +27,39 @@ const Questions = () => {
             })
             .finally(() => {
                 setLoading(false);
-                
             });
-        getCategories();
     };
 
     useEffect(() => {
         handleQuestionFetch(50);
     }, []);
 
+    useEffect(() => {
+        getCategories();
+    }, [questions]);
+
     const getCategories = () => {
         if (questions) {
-            console.log(questions.length);
             setCategories(getAllCategories(questions));
         } else {
-            console.log("No questions");
             setCategories([]);
         }
     };
 
+    const selectCategory = (category: string) => {
+        if (questions) {
+            if (category === "All categories") {
+                setDisplayedQuestions(questions);
+                return;
+            }
+            const filteredQuestions = filterQuestionsByCategory(questions, category);
+            setDisplayedQuestions(filteredQuestions);
+        }
+    };
+
     return (
-        <div>
-            <FetchDataForm categories={categories} handleQuestionFetch={handleQuestionFetch}/>
+        <div className='w-5/6 mx-auto mt-20'>
+            <FetchDataForm categories={categories} handleQuestionFetch={handleQuestionFetch} handleCategorySelect={selectCategory}/>
             {loading && <span className="loading loading-dots loading-md mt-10"></span>}
             {error && 
                 <div role="alert" className="alert alert-error fixed bottom-5 left-1/2 -translate-x-1/2">
@@ -56,9 +69,9 @@ const Questions = () => {
                     <span>Error! {error}</span>
                 </div>
             }
-            {questions && !loading && !error && 
-                questions.map((question, index) => (
-                    <OneQuestion key={index} question={question} />
+            {displayedQuestions && !loading && !error && 
+                displayedQuestions.map((question) => (
+                    <OneQuestion key={question.question} question={question} />
                 ))
             }
         </div>

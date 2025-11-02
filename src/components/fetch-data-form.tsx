@@ -4,27 +4,44 @@ import type { Question } from '../types/types';
 
 interface Props {
     categories: string[] | null,
-    handleQuestionFetch: (amount: number) => void
+    handleQuestionFetch: (amount: number) => void,
+    handleCategorySelect: (category: string) => void
 }
 
-const FetchDataForm = ({categories, handleQuestionFetch}: Props) => {
-    const [amount, setAmount] = useState(0);
+const FetchDataForm = ({categories, handleQuestionFetch, handleCategorySelect}: Props) => {
+    const [amount, setAmount] = useState('');
     const [isDisabled, setIsDisabled] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('All categories');
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        handleQuestionFetch(amount);
+        handleQuestionFetch(parseInt(amount));
 
         setIsDisabled(true);
         setTimeout(() => {
             setIsDisabled(false);
         }, 5000);
+
+        setSelectedCategory('All categories');
+
+        setAmount('');
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value !== null ) {
+            setAmount(e.target.value);
+        }
+    }
+
+    const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedCategory(e.target.value);
+        handleCategorySelect(e.target.value);
     }
 
     return (
-        <div className='flex justify-between items-center mt-20'>
-            <select defaultValue="Server location" className="select select-neutral">
-                <option disabled={true}>All categories</option>
+        <div className='flex justify-between items-center w-full'>
+            <select value={selectedCategory} className="select select-neutral" onChange={handleSelect}>
+                <option>All categories</option>
                 {categories && categories.map((category, index) => (
                     <option key={index}>{category}</option>
                 ))}
@@ -34,7 +51,8 @@ const FetchDataForm = ({categories, handleQuestionFetch}: Props) => {
                 <input 
                     className='input input-neutral'
                     type='number'
-                    onChange={(e) => setAmount(parseInt(e.target.value))}
+                    value={amount}
+                    onChange={handleChange}
                     placeholder="Number of questions to fetch"
                     required
                     min={1}
