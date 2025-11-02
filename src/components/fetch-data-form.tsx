@@ -39,7 +39,7 @@ const FetchDataForm = ({categories, handleQuestionFetch, handleCategorySelect}: 
     }
 
     return (
-        <div className='flex justify-between items-center w-full'>
+        <div className='flex justify-between items-center w-full mt-20'>
             <select value={selectedCategory} className="select select-neutral" onChange={handleSelect}>
                 <option>All categories</option>
                 {categories && categories.map((category, index) => (

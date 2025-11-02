@@ -14,17 +14,24 @@ export function filterQuestionsByType(questions: Question[], type: string) {
 
 export function groupQuestionsByCategory(questions: Question[]) {
     const counts: Record<string, number> = {};
+    
     for (const question of questions) {
         counts[question.category] = (counts[question.category] || 0) + 1;
     }
-    return counts;
+
+    return Object.entries(counts).map(([category, count]) => ({
+        category,
+        count
+    }));
 }
 
 export function groupQuestionsByDifficulty(questions: Question[]) {
-    const counts: Record<string, number> = {};
-    for (const question of questions) {
-        counts[question.difficulty] = (counts[question.difficulty] || 0) + 1;
-    }
+    const counts = [
+        { difficulty: 'Easy', count: questions.filter(q => q.difficulty === 'easy').length },
+        { difficulty: 'Medium', count: questions.filter(q => q.difficulty === 'medium').length },
+        { difficulty: 'Hard', count: questions.filter(q => q.difficulty === 'hard').length }
+    ];
+
     return counts;
 }
 
