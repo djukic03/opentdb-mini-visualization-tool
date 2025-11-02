@@ -28,3 +28,12 @@ export function groupQuestionsByDifficulty(questions: Question[]) {
     return counts;
 }
 
+export function getAllCategories(questions: Question[]) {
+    const categories: string[] = [];
+    for (const question of questions) {
+        if (!categories.includes(question.category)) {
+            categories.push(question.category);
+        }
+    }
+    return categories;
+}

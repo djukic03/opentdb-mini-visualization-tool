@@ -4,15 +4,16 @@ import type { APIResponse, Question } from "../types/types";
 
 const triviaAPI = axios.create({
     baseURL: "https://opentdb.com/api.php",
-    params: {
-        amount: 50,
-    },
     timeout: 5000
 });
 
-export const fetchQuestions = async (): Promise<Question[]> => {
+export const fetchQuestions = async (amountOfQuestions: number): Promise<Question[]> => {
     try{
-        const response = await triviaAPI.get<APIResponse>("/");
+        const response = await triviaAPI.get<APIResponse>("/", {
+            params: {
+                amount: amountOfQuestions
+            }
+        });
 
         if(response.data.response_code !== 0){
             handleAPIError(response.data.response_code);
@@ -28,8 +29,7 @@ export const fetchQuestions = async (): Promise<Question[]> => {
 
         return decodedQuestions;
     } catch(error){
-        console.error(error);
-        return [];
+        throw error;
     }
 }
 
