@@ -35,6 +35,23 @@ export function groupQuestionsByDifficulty(questions: Question[]) {
     return counts;
 }
 
+export function getCategoryDifficultyData(questions: Question[]) {
+    const categoriesMap: Record<string, { category: string; easy: number; medium: number; hard: number }> = {};
+    
+    questions.forEach(q => {
+      if (!categoriesMap[q.category]) {
+        categoriesMap[q.category] = { category: q.category, easy: 0, medium: 0, hard: 0 };
+      }
+      
+      if (q.difficulty === 'easy') categoriesMap[q.category].easy++;
+      else if (q.difficulty === 'medium') categoriesMap[q.category].medium++;
+      else if (q.difficulty === 'hard') categoriesMap[q.category].hard++;
+    });
+    
+    return Object.values(categoriesMap)
+      .sort((a, b) => (b.easy + b.medium + b.hard) - (a.easy + a.medium + a.hard));
+};
+
 export function getAllCategories(questions: Question[]) {
     const categories: string[] = [];
     for (const question of questions) {
