@@ -1,7 +1,6 @@
-import React from 'react'
 import { useQuestions } from '../contexts/questions-context'
 import { groupQuestionsByDifficulty } from '../utilities/questions-processing';
-import { Bar, BarChart, CartesianGrid, Cell, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { ChartColumnBig } from 'lucide-react';
 
 const COLORS = {Easy: '#10B981', Medium: '#F59E0B', Hard: '#EF4444'};

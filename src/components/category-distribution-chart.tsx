@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react'
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts'
 import { useQuestions } from '../contexts/questions-context';
 import { groupQuestionsByCategory } from '../utilities/questions-processing';
@@ -28,7 +27,7 @@ const CategoryDistributionChart = ({ isAnimationActive = true }: { isAnimationAc
                         labelLine={false}
                         isAnimationActive={isAnimationActive}
                     >
-                        {pieChartData.map((entry, index) => (
+                        {pieChartData.map((index) => (
                             <Cell key={`cell-${index}`} fill={`#${Math.floor(Math.random() * 16777215).toString(16)}`}/>
                         ))}
                     </Pie>

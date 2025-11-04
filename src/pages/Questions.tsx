@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion';
 import type { Question } from '../types/types';
 import FetchDataForm from '../components/fetch-data-form';

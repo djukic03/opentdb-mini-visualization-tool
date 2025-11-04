@@ -1,4 +1,3 @@
-import React from 'react'
 import { useQuestions } from '../contexts/questions-context';
 
 const QuestionsTable = () => {

@@ -1,4 +1,3 @@
-import React from 'react'
 import { useQuestions } from '../contexts/questions-context';
 import { getCategoryDifficultyData } from '../utilities/questions-processing';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';

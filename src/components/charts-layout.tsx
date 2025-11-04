@@ -1,4 +1,3 @@
-import React from 'react'
 import CategoryDistributionChart from './category-distribution-chart'
 import DifficultyDistributionChart from './difficulty-distribution-chart'
 import SummaryCards from './summary-cards'

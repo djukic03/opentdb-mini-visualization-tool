@@ -1,4 +1,3 @@
-import React from 'react'
 import { useQuestions } from '../contexts/questions-context';
 import { groupQuestionsByCategory, groupQuestionsByDifficulty } from '../utilities/questions-processing';
 

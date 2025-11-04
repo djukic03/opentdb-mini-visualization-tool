@@ -1,4 +1,3 @@
-import React from 'react'
 import { motion } from 'framer-motion'
 import NavBar from '../components/nav-bar'
 import ChartsLayout from '../components/charts-layout'

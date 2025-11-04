@@ -1,6 +1,4 @@
 import React, { useState } from 'react'
-import { getAllCategories } from '../utilities/questions-processing';
-import type { Question } from '../types/types';
 
 interface Props {
     categories: string[] | null,
